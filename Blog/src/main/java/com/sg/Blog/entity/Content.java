@@ -18,7 +18,7 @@ public class Content {
     private String body;
     private boolean approved;
     private User user;
-    private Set<Tags> hashtags;
+    private Set<Tag> hashtags;
 
     public int getId() {
         return id;
@@ -60,11 +60,11 @@ public class Content {
         this.user = user;
     }
 
-    public Set<Tags> getHashtags() {
+    public Set<Tag> getHashtags() {
         return hashtags;
     }
 
-    public void setHashtags(Set<Tags> hashtags) {
+    public void setHashtags(Set<Tag> hashtags) {
         this.hashtags = hashtags;
     }
 

@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * @author mohamed
  */
-public class Tags {
+public class Tag {
     private int id;
     private String hashtag;
 
@@ -50,7 +50,7 @@ public class Tags {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Tags other = (Tags) obj;
+        final Tag other = (Tag) obj;
         if (this.id != other.id) {
             return false;
         }
