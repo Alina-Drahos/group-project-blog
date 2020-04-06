@@ -7,16 +7,32 @@ package com.sg.Blog.entity;
 
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  *
  * @author mohamed
  */
+@Entity
 public class Content {
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Id
     private int id;
+    
+    @Column
     private String title;
+    
+    @Column
     private String body;
+    
+    @Column
     private boolean approved;
+    
+    
     private User user;
     private Set<Tag> hashtags;
 

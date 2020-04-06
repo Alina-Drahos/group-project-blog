@@ -18,6 +18,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ContentDao extends JpaRepository<Content, Integer>{
-    List<Content> findAllByTag(Tag tag);
+    List<Content> findAllByHashtagsContaining(Tag tag);
     List<Content> findAllByUser(User user);
 }
