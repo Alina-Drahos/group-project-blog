@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 /**
  *
@@ -32,7 +33,7 @@ public class User {
     @Column
     private boolean enabled;
     
-    
+    @ManyToMany
     private Set<Role> roles;
 
     public int getId() {
