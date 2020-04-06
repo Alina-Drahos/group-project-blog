@@ -22,7 +22,7 @@ public class Tag {
     @Id
     private int id;
     
-    @Column
+    @Column(nullable = false)
     private String hashtag;
 
     public int getId() {

@@ -12,8 +12,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -25,19 +27,23 @@ public class Content {
     @Id
     private int id;
     
-    @Column
+    @Column(nullable = false)
     private String title;
     
-    @Column
+    @Column(nullable = false)
     private String body;
     
-    @Column
+    @Column(nullable = false)
     private boolean approved;
     
-    @OneToMany
+    @ManyToOne
+    @JoinColumn(name = "userid", nullable = false)
     private User user;
     
     @ManyToMany
+    @JoinTable(name = "content_tag",
+            joinColumns = {@JoinColumn(name="id_content")},
+            inverseJoinColumns={@JoinColumn(name="id_tag")})
     private Set<Tag> hashtags;
 
     public int getId() {

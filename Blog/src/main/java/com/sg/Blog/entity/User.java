@@ -12,28 +12,36 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 /**
  *
  * @author mohamed
  */
-@Entity
+@Entity(name = "Users")
 public class User {
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int id;
-    
-    @Column
+
+    @Column(nullable = false)
     private String username;
-    
-    @Column
+
+    @Column(nullable = false)
     private String password;
-    
-    @Column
+
+    @Column(nullable = false)
     private boolean enabled;
-    
+
     @ManyToMany
+    @JoinTable(name = "content_tag",
+            joinColumns = {
+                @JoinColumn(name = "id_users")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "id_role")})
     private Set<Role> roles;
 
     public int getId() {
@@ -117,6 +125,4 @@ public class User {
         return true;
     }
 
-    
-    
 }

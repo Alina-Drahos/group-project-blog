@@ -14,6 +14,7 @@ create table Users(
 create table Content(
 	Id int primary key auto_increment,
     userId int not null,
+    title varchar(45) not null,
     body varchar(255) not null,
     approved tinyint not null
 );
