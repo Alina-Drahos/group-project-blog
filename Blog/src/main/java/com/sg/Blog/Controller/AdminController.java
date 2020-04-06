@@ -5,10 +5,14 @@
  */
 package com.sg.Blog.controller;
 
+import org.springframework.stereotype.Controller;
+
 /**
  *
  * @author carlo
  */
+
+@Controller
 public class AdminController {
     
 }
