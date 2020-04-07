@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+            <title>Disclaimer Page</title>
+    </head>
+    <body>
+        <!-- Main Body of Page -->
+        <div sec:authorize="isAuthenticated()">
+            
+            <div class="container">
+                <div class="row m-4">
+                    <div class="col text-center">
+                        <h1>Game Blog</h1>
+                    </div>
+                </div>
+                <div class="row m-2 border border-dark">
+                    <div class="col text-center m-3">
+                        <a href="/" class="btn btn-outline-primary btn-lg">Home</a>
+                    </div>
+                    <div class="col text-center m-3">
+                        <a href="contents" class="btn btn-outline-primary btn-lg">Blog Feed</a>
+                    </div>
+                    <div class="row form-group text-center m-3">
+                        <label for="search" class="m-2" style="font-size: 20px">Search: </label>
+                        <input type="text" id="search" placeholder="#Search"/>
+                    </div>
+                    <div class="col text-center m-3">
+                        <a href="login" class="btn btn-outline-primary btn-lg">Log In</a>
+                    </div>
+                    
+                    <div sec:authorize="isAuthenticated()">
+                        <div class="col text-center m-3">
+                            <a href="addPost" class="btn btn-outline-primary btn-lg">Add a Post</a>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div th:each="blog : ${contents}">
+                    <div class="row m-4">
+                        <div class="m-2">
+                            <h2 style="font-family: georgia; font-style: italic" class="col text-left" th:text="${blog.title}"></h2>
+                        </div>
+                    </div>
+                    <div class="row m-4">
+                        <div class="m-2">
+                            <p class="col-8 text-left" th:text="${blog.body}"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <footer class="page-footer">
+                    <div class="col text-center">
+                        <small>Copyright &copy; Game Blog</small>
+                    </div>
+                </footer>
+            </div>
+            
+        </div>
+
+        <!-- End main body -->
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </body>
+</html>

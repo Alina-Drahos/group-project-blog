@@ -36,6 +36,9 @@ public class Content {
     @Column(nullable = false)
     private boolean approved;
     
+    @Column(nullable = false, name = "isstatic")
+    private boolean isStatic;
+    
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
     private User user;
@@ -78,6 +81,14 @@ public class Content {
         this.approved = approved;
     }
 
+    public boolean isIsStatic() {
+        return isStatic;
+    }
+
+    public void setIsStatic(boolean isStatic) {
+        this.isStatic = isStatic;
+    }
+
     public User getUser() {
         return user;
     }
@@ -96,13 +107,14 @@ public class Content {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 67 * hash + this.id;
-        hash = 67 * hash + Objects.hashCode(this.title);
-        hash = 67 * hash + Objects.hashCode(this.body);
-        hash = 67 * hash + (this.approved ? 1 : 0);
-        hash = 67 * hash + Objects.hashCode(this.user);
-        hash = 67 * hash + Objects.hashCode(this.hashtags);
+        int hash = 3;
+        hash = 71 * hash + this.id;
+        hash = 71 * hash + Objects.hashCode(this.title);
+        hash = 71 * hash + Objects.hashCode(this.body);
+        hash = 71 * hash + (this.approved ? 1 : 0);
+        hash = 71 * hash + (this.isStatic ? 1 : 0);
+        hash = 71 * hash + Objects.hashCode(this.user);
+        hash = 71 * hash + Objects.hashCode(this.hashtags);
         return hash;
     }
 
@@ -124,6 +136,9 @@ public class Content {
         if (this.approved != other.approved) {
             return false;
         }
+        if (this.isStatic != other.isStatic) {
+            return false;
+        }
         if (!Objects.equals(this.title, other.title)) {
             return false;
         }
@@ -138,6 +153,5 @@ public class Content {
         }
         return true;
     }
-    
-    
+
 }

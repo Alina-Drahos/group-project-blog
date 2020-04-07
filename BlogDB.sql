@@ -1,8 +1,8 @@
-drop database if exists Blog;
+drop database if exists BlogDB;
 
-create database Blog;
+create database BlogDB;
 
-use Blog;
+use BlogDB;
 
 create table Users(
 	Id int primary key auto_increment,
