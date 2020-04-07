@@ -1,8 +1,8 @@
-drop database if exists Blog;
+drop database if exists BlogDB;
 
-create database Blog;
+create database BlogDB;
 
-use Blog;
+use BlogDB;
 
 create table Users(
 	Id int primary key auto_increment,
@@ -16,7 +16,8 @@ create table Content(
     userId int not null,
     title varchar(45) not null,
     body varchar(255) not null,
-    approved tinyint not null
+    approved tinyint not null,
+    foreign key (userId) references Users(Id)
 );
 
 create table Role(
