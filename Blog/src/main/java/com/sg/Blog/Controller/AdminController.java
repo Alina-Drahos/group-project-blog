@@ -10,6 +10,7 @@ import com.sg.Blog.dao.UserDao;
 import com.sg.Blog.entity.Role;
 import com.sg.Blog.entity.User;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -65,7 +66,7 @@ public class AdminController {
     @GetMapping("/editUser")
     public String editUserDisplay(Model model, Integer id) {
         User user = users.getUserById(id);
-        List<Role> oleList = roles.getAllRoles(r);
+        List<Role> roleList = roles.getAllRoles(r);
 
         model.addAttribute("user", user);
         model.addAttribute("roles", roleList);
