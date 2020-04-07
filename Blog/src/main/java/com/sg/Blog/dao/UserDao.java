@@ -6,6 +6,7 @@
 package com.sg.Blog.dao;
 
 import com.sg.Blog.entity.User;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +16,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserDao extends JpaRepository<User, Integer>{
-    
+    List<User> getAllUsers();
+    User addUser(User user);
+    User getUserById(int id);
+    void updateUser(User user);
+    void deleteUser(int id);    
 }

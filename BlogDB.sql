@@ -16,7 +16,8 @@ create table Content(
     userId int not null,
     title varchar(45) not null,
     body varchar(255) not null,
-    approved tinyint not null
+    approved tinyint not null,
+    foreign key (userId) references Users(Id)
 );
 
 create table Role(

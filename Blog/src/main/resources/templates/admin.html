@@ -1,0 +1,124 @@
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+        <title>Game Blog: Admin</title>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Gaming Blog</h1>
+            <hr/>
+            <div class="navbar">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="nav-item">
+                        <a class="nav-link" href="/">
+                            Home
+                        </a>
+                    </li>
+                    <li role="presentation" class="nav-item">
+                        <a class="nav-link" href="content">
+                            Content (must have the user role)
+                        </a>
+                    </li>
+                    <li role="presentation" class="nav-item">
+                        <a class="nav-link active" href="admin">
+                            Admin (must have the admin role)
+                        </a>
+                    </li>
+                </ul>    
+            </div>
+            <h2>Admin Page</h2>
+            <div sec:authorize="isAuthenticated()">
+                <form class="form-inline" 
+                      method="POST" 
+                      action="/logout">
+                    <input type="hidden" 
+                           th:name="${_csrf.parameterName}" 
+                           th:value="${_csrf.token}"/>
+                    <label for="submit">
+                        Hello : <span th:text="${#authentication.name}">
+                        </span>&nbsp;&nbsp;&nbsp;|
+                    </label>
+                    <button class="btn btn-link" 
+                            id="submit" 
+                            type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <h3>Add User</h3>
+            </div>
+            <div class="row">
+                <form class="form form-inline" 
+                      method="POST" 
+                      action="addUser">
+                    <input type="hidden" 
+                           th:name="${_csrf.parameterName}" 
+                           th:value="${_csrf.token}"/>&nbsp;
+                    <label for="username">Username:</label>&nbsp;
+                    <input type="text" name="username" id="username">&nbsp;
+                    <label for="password">Password:</label>&nbsp;
+                    <input type="password" name="password" id="password">&nbsp;
+                    <button type="submit">Add User</button>
+                </form>
+            </div>
+        </div>
+        <div class="container">
+            <div class ="row">
+                <h3>Users</h3>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Username</th>
+                        <th>Roles</th>
+                        <th>Enabled</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    <div th:each="currentUser : ${users}">
+                        <tr>
+                            <td th:text="${currentUser.username}">username</td>
+                            <td>
+                                <div th:each="currentRole : ${currentUser.roles}" >
+                                    <span th:text="${currentRole.role}">role</span>&nbsp;
+                                </div>
+                            </td>
+                            <td th:text="${currentUser.enabled}">enabled</td>
+                            <td><a href="#" th:href="@{/editUser(id=${currentUser.id})}">Edit</a></td>
+                            <td>
+                                <form class="form-inline" 
+                                      method="POST" 
+                                      action="/deleteUser">
+                                    <input type="hidden" 
+                                           th:name="${_csrf.parameterName}" 
+                                           th:value="${_csrf.token}"/>
+                                    <input type="hidden" 
+                                           name="id" 
+                                           th:value="${currentUser.id}"/>
+                                    <button class="btn btn-link btn-xs" type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </div>
+                </table>
+            </div>
+        </div>
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </body>
+</html>
