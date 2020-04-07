@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sg.Blog.Controller;
+package com.sg.Blog.controller;
 
 import com.sg.Blog.dao.ContentDao;
 import com.sg.Blog.dao.RoleDao;
@@ -51,8 +51,8 @@ public class UserController {
 
     @GetMapping("users")
     public String displayUsers(Model model) {
-        List<User> users = userDao.getAllUsers();
-        List<Role> userRoles = roleDao.getAllRoles();
+        List<User> users = userDao.findAll();
+        List<Role> userRoles = roleDao.findAll();
         model.addAttribute("users", users);
         model.addAttribute("userRoles", userRoles);
         model.addAttribute("user", new User());
@@ -68,7 +68,7 @@ public class UserController {
         Set<Role> userRoles = new HashSet<>();
         if (roleIds != null) {
             for (String roleId : roleIds) {
-                userRoles.add(roleDao.getRoleById(Integer.parseInt(roleId)));
+                userRoles.add(roleDao.findById(Integer.parseInt(roleId)).orElse(null));
             }
         } else {
             FieldError error = new FieldError("user", "userRoles", "Must include one role");
@@ -76,37 +76,37 @@ public class UserController {
         }
 
         if (result.hasErrors()) {
-            model.addAttribute("user", userDao.getAllUsers());
-            model.addAttribute("roles", roleDao.getAllRoles());
+            model.addAttribute("user", userDao.findAll());
+            model.addAttribute("roles", roleDao.findAll());
             return "/admin";
         }
 
         user.setRoles(userRoles);
         user.setPassword(encoder.encode(password));
-        userDao.addUser(user);
+        userDao.save(user);
         return "redirect:/admin";
     }
 
     @GetMapping("deleteUser")
     public String deleteUSer(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
-        userDao.deleteUser(id);
+        userDao.deleteById(id);
         return "redirect:/admin";
 
     }
 
-    @GetMapping("editUser")
-    public String editUser(HttpServletRequest request, Model model) {
-        int id = Integer.parseInt(request.getParameter("id"));
-        User user = userDao.getUserById(id);
-        user.setRoles(roleDao.getAllRolesforUser(user));
-        List<Role> userRoles = roleDao.getAllRoles();
-
-        model.addAttribute("user", user);
-        model.addAttribute("userRoles", userRoles);
-        return "user";
-
-    }
+//    @GetMapping("editUser")
+//    public String editUser(HttpServletRequest request, Model model) {
+//        int id = Integer.parseInt(request.getParameter("id"));
+//        User user = userDao.findById(id).orElse(null);
+//        user.setRoles(roleDao.getAllRolesforUser(user));
+//        List<Role> userRoles = roleDao.findAll();
+//
+//        model.addAttribute("user", user);
+//        model.addAttribute("userRoles", userRoles);
+//        return "user";
+//
+//    }
 
     @PostMapping("editUser")
     public String performEditUser(@Valid User user, BindingResult result, HttpServletRequest request,
@@ -118,7 +118,7 @@ public class UserController {
         Set<Role> userRoles = new HashSet<>();
         if (roleIds != null) {
             for (String roleId : roleIds) {
-                userRoles.add(roleDao.getRoleById(Integer.parseInt(roleId)));
+                userRoles.add(roleDao.findById(Integer.parseInt(roleId)).orElse(null));
             }
         } else {
             FieldError error = new FieldError("user", "userRoles", "Must include one role");
@@ -128,13 +128,13 @@ public class UserController {
         user.setRoles(userRoles);
 
         if (result.hasErrors()) {
-            model.addAttribute("user", userDao.getAllUsers());
-            model.addAttribute("roles", roleDao.getAllRoles());
+            model.addAttribute("user", userDao.findAll());
+            model.addAttribute("roles", roleDao.findAll());
             return "/admin";
         }
 
         user.setPassword(encoder.encode(password));
-        userDao.addUser(user);
+        userDao.save(user);
         return "redirect:/admin";
 
     }

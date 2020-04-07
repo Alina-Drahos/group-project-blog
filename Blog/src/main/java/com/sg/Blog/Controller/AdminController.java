@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  *
  * @author carlo
  */
-@Controller
+//@Controller
 public class AdminController {
 
     @Autowired
@@ -37,7 +37,7 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String displayAdminPage(Model model) {
-        model.addAttribute("users", users.getAllUsers());
+        model.addAttribute("users", users.findAll());
         return "admin";
     }
 
@@ -48,25 +48,23 @@ public class AdminController {
         user.setPassword(encoder.encode(password));
         user.setEnabled(true);
 
-        Set<Role> userRoles = new HashSet<>();
-        userRoles.add(roles.getRoleByRole("ROLE_USER"));
-        user.setRoles(userRoles);
+        user.setRoles(roles.findAllByRole("ROLE_USER"));
 
-        users.createUser(user);
+        users.save(user);
 
         return "redirect:/admin";
     }
 
     @PostMapping("/deleteUser")
     public String deleteUser(Integer id) {
-        users.deleteUserById(id);
+        users.deleteById(id);
         return "redirect:/admin";
     }
 
     @GetMapping("/editUser")
     public String editUserDisplay(Model model, Integer id) {
-        User user = users.getUserById(id);
-        List<Role> roleList = roles.getAllRoles(r);
+        User user = users.findById(id).orElse(null);
+        List<Role> roleList = roles.findAll();
 
         model.addAttribute("user", user);
         model.addAttribute("roles", roleList);
@@ -75,7 +73,7 @@ public class AdminController {
 
     @PostMapping(value = "/editUser")
     public String editUserAction(String[] roleIdList, Boolean enabled, Integer id) {
-        User user = users.getUserById(id);
+        User user = users.findById(id).orElse(null);
         if (enabled != null) {
             user.setEnabled(enabled);
         } else {
@@ -84,22 +82,22 @@ public class AdminController {
 
         Set<Role> roleList = new HashSet<>();
         for (String roleId : roleIdList) {
-            Role role = roles.getRoleById(Integer.parseInt(roleId));
+            Role role = roles.findById(Integer.parseInt(roleId)).orElse(null);
             roleList.add(role);
         }
         user.setRoles(roleList);
-        users.updateUser(user);
+        users.save(user);
 
         return "redirect:/admin";
     }
 
     @PostMapping("editPassword")
     public String editPassword(Integer id, String password, String confirmPassword) {
-        User user = users.getUserById(id);
+        User user = users.findById(id).orElse(null);
 
         if (password.equals(confirmPassword)) {
             user.setPassword(encoder.encode(password));
-            users.updateUser(user);
+            users.save(user);
             return "redirect:/admin";
         } else {
             return "redirect:/editUser?id=" + id + "&error=1";
@@ -108,8 +106,8 @@ public class AdminController {
 
     @GetMapping("/editUser")
     public String editUserDisplay(Model model, Integer id, Integer error) {
-        User user = users.getUserById(id);
-        List roleList = roles.getAllRoles();
+        User user = users.findById(id).orElse(null);
+        List roleList = roles.findAll();
 
         model.addAttribute("user", user);
         model.addAttribute("roles", roleList);

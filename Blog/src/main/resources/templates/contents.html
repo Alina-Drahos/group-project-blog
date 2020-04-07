@@ -37,7 +37,7 @@
                         <a href="login" class="btn btn-outline-primary btn-lg">Log In</a>
                     </div>
                     
-                    <div sec:authorize="isAuthenticated()">
+                    <div sec:authorize="hasRole('ROLE_USER')">
                         <div class="col text-center m-3">
                             <a href="addPost" class="btn btn-outline-primary btn-lg">Add a Post</a>
                         </div>

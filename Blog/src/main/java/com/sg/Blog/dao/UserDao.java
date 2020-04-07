@@ -15,10 +15,6 @@ import org.springframework.stereotype.Repository;
  * @author mohamed
  */
 @Repository
-public interface UserDao extends JpaRepository<User, Integer>{
-    List<User> getAllUsers();
-    User addUser(User user);
-    User getUserById(int id);
-    void updateUser(User user);
-    void deleteUser(int id);    
+public interface UserDao extends JpaRepository<User, Integer>{  
+    User findByUsername(String username);
 }
