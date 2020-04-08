@@ -6,7 +6,9 @@
 package com.sg.Blog.controller;
 
 import com.sg.Blog.dao.ContentDao;
+import com.sg.Blog.dao.UserDao;
 import com.sg.Blog.entity.Content;
+import java.security.Principal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,9 @@ public class ContentController {
     
     @Autowired
     ContentDao contentDao;
+    
+    @Autowired
+    UserDao userDao;
     
     @GetMapping("/")
     public String displayHome(Model model) {
@@ -48,12 +53,13 @@ public class ContentController {
     
     @GetMapping("addPost")
     public String getPost(Model model) {
-        model.addAttribute("blog", new Content());
+        model.addAttribute("content", new Content());
         return "addPost";
     }
     
     @PostMapping("addPost")
-    public String postContent(Content content) {
+    public String postContent(Principal p, Content content) {
+        content.setUser(userDao.findByUsername(p.getName()));
         contentDao.save(content);
         return "redirect:/contents";
     }

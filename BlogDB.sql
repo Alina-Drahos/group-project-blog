@@ -7,7 +7,7 @@ use BlogDB;
 create table Users(
 	Id int primary key auto_increment,
     username varchar(45) not null,
-    `password` varchar(45) not null,
+    `password` varchar(100) not null,
     enabled tinyint(1) not null
 );
 
@@ -15,8 +15,9 @@ create table Content(
 	Id int primary key auto_increment,
     userId int not null,
     isstatic tinyint not null,
+    datepublished DATE,
     title varchar(45) not null,
-    body varchar(255) not null,
+    body varchar(10000) not null,
     approved tinyint not null,
     foreign key (userId) references Users(Id)
 );
@@ -56,6 +57,9 @@ insert into role (id, userRole)
     
 insert into User_Role(`Id_Users`,`Id_Role`)
     values(1,1),(1,2),(2,2);
+    
+UPDATE users SET password = '$2a$10$S8nFUMB8YIEioeWyap24/ucX.dC6v9tXCbpHjJVQUkrXlrH1VLaAS' WHERE id = 1;
+UPDATE users SET password = '$2a$10$S8nFUMB8YIEioeWyap24/ucX.dC6v9tXCbpHjJVQUkrXlrH1VLaAS' WHERE id = 2;
 
 
 

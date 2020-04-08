@@ -15,56 +15,92 @@
     <body>
         <!-- Main Body of Page -->
         <div sec:authorize="isAuthenticated()">
-            
+
             <div class="container">
                 <div class="row m-4">
                     <div class="col text-center">
-                        <h1>Game Blog</h1>
+                        <h1>Game Blog</h1><hr/>
                     </div>
                 </div>
-                <div class="row m-2 border border-dark">
-                    <div class="col text-center m-3">
-                        <a href="/" class="btn btn-outline-primary btn-lg">Home</a>
-                    </div>
-                    <div class="col text-center m-3">
-                        <a href="contents" class="btn btn-outline-primary btn-lg">Blog Feed</a>
-                    </div>
-                    <div class="row form-group text-center m-3">
-                        <label for="search" class="m-2" style="font-size: 20px">Search: </label>
-                        <input type="text" id="search" placeholder="#Search"/>
-                    </div>
-                    <div class="col text-center m-3">
-                        <a href="login" class="btn btn-outline-primary btn-lg">Log In</a>
-                    </div>
-                    
-                    <div sec:authorize="hasRole('ROLE_USER')">
-                        <div class="col text-center m-3">
-                            <a href="addPost" class="btn btn-outline-primary btn-lg">Add a Post</a>
+
+                <div class="row m-2" sec:authorize="isAuthenticated()">
+                    <form class="form-inline" 
+                          method="POST" 
+                          action="/logout">
+                        <input type="hidden" 
+                               th:name="${_csrf.parameterName}" 
+                               th:value="${_csrf.token}"/>
+                        <label for="submit">
+                            Hello : <span th:text="${#authentication.name}">
+                            </span>&nbsp;&nbsp;&nbsp;|
+                        </label>
+                        <button class="btn btn-link" 
+                                id="submit" 
+                                type="submit">Logout</button>
+                    </form>
+                </div>
+
+                <div class="navbar">
+                    <div class="nav nav-tabs">
+                        <div role="presentation" class="nav-item">
+                            <a href="/" class="nav-link">Home</a>
+                        </div>
+                        <div role="presentation" class="nav-item">
+                            <a href="contents" class="nav-link">Blog Feed</a>
+                        </div>
+                        <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
+                            <a href="admin" class="nav-link">Admin Menu</a>
+                        </div>
+                        <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
+                            <a href="addPost" class="nav-link">Add a Post</a>
+                        </div>
+                        <div sec:authorize="isAnonymous()" role="presentation" class="nav-item">
+                            <a href="login" class="nav-link">Login</a>
                         </div>
                     </div>
-                    
                 </div>
+
+                <!--                <div class="row m-2 border border-dark">
+                                    <div class="col text-center m-3">
+                                        <a href="/" class="btn btn-outline-primary btn-lg">Home</a>
+                                    </div>
+                                    <div class="col text-center m-3">
+                                        <a href="contents" class="btn btn-outline-primary btn-lg">Blog Feed</a>
+                                    </div>
+                                    <div class="row form-group text-center m-3">
+                                        <label for="search" class="m-2" style="font-size: 20px">Search: </label>
+                                        <input type="text" id="search" placeholder="#Search"/>
+                                    </div>
+                                    <div class="col text-center m-3">
+                                        <a href="login" class="btn btn-outline-primary btn-lg">Log In</a>
+                                    </div>
                 
-                <div th:each="blog : ${contents}">
+                                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                                        <div class="col text-center m-3">
+                                            <a href="addPost" class="btn btn-outline-primary btn-lg">Add a Post</a>
+                                        </div>
+                                    </div>
+                                </div>-->
+
+                <div class="col-8 border" style="border-color: blue" th:each="blog : ${contents}">
                     <div class="row m-4">
-                        <div class="m-2">
-                            <h2 style="font-family: georgia; font-style: italic" class="col text-left" th:text="${blog.title}"></h2>
-                        </div>
+                        <h2 style="font-family: georgia; font-style: italic" class="col text-left" th:text="${blog.title}"></h2>
                     </div>
                     <div class="row m-4">
-                        <div class="m-2">
-                            <p class="col-8 text-left" th:text="${blog.body}"></p>
-                        </div>
+                        <small><p th:text="${blog.datePublished}"></p></small>
+                    </div>
+                    <div class="row m-4">
+                        <p class="text-left" th:utext="${blog.body}"></p>
                     </div>
                 </div>
-                
+
                 <footer class="page-footer">
                     <div class="col text-center">
                         <small>Copyright &copy; Game Blog</small>
                     </div>
                 </footer>
             </div>
-            
+
         </div>
 
         <!-- End main body -->
