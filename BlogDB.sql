@@ -8,12 +8,13 @@ create table Users(
 	Id int primary key auto_increment,
     username varchar(45) not null,
     `password` varchar(45) not null,
-    enabled tinyint not null
+    enabled tinyint(1) not null
 );
 
 create table Content(
 	Id int primary key auto_increment,
     userId int not null,
+    isstatic tinyint not null,
     title varchar(45) not null,
     body varchar(255) not null,
     approved tinyint not null,
@@ -45,6 +46,16 @@ create table User_Role(
 	foreign key (Id_Users) references Users(Id),
     foreign key (Id_Role) references Role(Id)
 );
+
+insert into Users(id, username, `password`,enabled)
+    values(1,"admin", "password", 1),
+        (2,"user","password", 1);
+
+insert into role (id, userRole)
+    values(1,"ROLE_ADMIN"), (2,"ROLE_USER");
+    
+insert into User_Role(`Id_Users`,`Id_Role`)
+    values(1,1),(1,2),(2,2);
 
 
 

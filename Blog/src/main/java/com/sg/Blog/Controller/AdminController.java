@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  *
  * @author carlo
  */
-//@Controller
+@Controller
 public class AdminController {
 
     @Autowired
@@ -61,16 +61,6 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/editUser")
-    public String editUserDisplay(Model model, Integer id) {
-        User user = users.findById(id).orElse(null);
-        List<Role> roleList = roles.findAll();
-
-        model.addAttribute("user", user);
-        model.addAttribute("roles", roleList);
-        return "editUser";
-    }
-
     @PostMapping(value = "/editUser")
     public String editUserAction(String[] roleIdList, Boolean enabled, Integer id) {
         User user = users.findById(id).orElse(null);
@@ -79,7 +69,6 @@ public class AdminController {
         } else {
             user.setEnabled(false);
         }
-
         Set<Role> roleList = new HashSet<>();
         for (String roleId : roleIdList) {
             Role role = roles.findById(Integer.parseInt(roleId)).orElse(null);
