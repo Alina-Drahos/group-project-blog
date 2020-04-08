@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  *
- * @author carlo
+ * 
  */
 @Controller
-public class AdminController {
+public class userController {
 
     @Autowired
     UserDao users;
