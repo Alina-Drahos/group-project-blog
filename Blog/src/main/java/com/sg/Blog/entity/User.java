@@ -38,7 +38,7 @@ public class User {
     private boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "content_tag",
+    @JoinTable(name = "user_role",
             joinColumns = {
                 @JoinColumn(name = "id_users")},
             inverseJoinColumns = {

@@ -22,7 +22,7 @@ public class Role {
     @Id
     private int id;
     
-    @Column(nullable = false)
+    @Column(name="userrole", nullable = false)
     private String role;
 
     public int getId() {
