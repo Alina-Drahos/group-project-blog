@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -40,6 +41,7 @@ public class Content {
     @Column(nullable = false, name = "isstatic")
     private boolean isStatic;
     
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "datepublished")
     private LocalDate datePublished;
     

@@ -47,28 +47,29 @@
 
                 <div class="row m-4">
                     <div class="col text-center m-3">
-                        <h3>Add Post</h3>
+                        <h3>Edit Post</h3>
                     </div>
                 </div>
                 <div class="row m-4">
                     <div class="row col m-3">
-                        <form action="/addPost" method="POST">
+                        <form action="/editPost" method="POST">
                             <input type="hidden" 
                            th:name="${_csrf.parameterName}" 
                            th:value="${_csrf.token}"/>
                             <div class="row form-group m-2">
                                 <label for="title" class="col-form-label col-2">Title: </label>
-                                <input type="text" class="col-6 form-control" id="title" name="title" placeholder="Enter title"/>
+                                <input type="text" class="col-6 form-control" id="title" name="title" th:value="${content.title}"/>
                             </div>
                             
                             <div class="row form-group m-2">
                                 <label for="date" class="col-form-label col-2">Published: </label>
-                                <input required id="date" type="date" class="col-6 form-control" name="datePublished"/>
+                                <input readonly id="date" type="date" class="col-6 form-control" name="datePublished" th:value="${content.datePublished}"/>
                             </div>
                             
-                            <textarea id="mytextarea" class="form-control m-2" name="body" placeholder="Enter body"></textarea>
+                            <textarea id="mytextarea" class="form-control m-2" name="body" th:value="${content.body}"></textarea>
 
                             <button type="submit" class="btn btn-primary m-2">Submit</button>
+                            <input type="hidden" name="id" th:value="${content.id}"/>
                         </form>
                     </div>
                 </div>

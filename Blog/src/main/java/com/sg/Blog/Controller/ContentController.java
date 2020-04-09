@@ -10,6 +10,7 @@ import com.sg.Blog.dao.UserDao;
 import com.sg.Blog.entity.Content;
 import java.security.Principal;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,5 +63,43 @@ public class ContentController {
         content.setUser(userDao.findByUsername(p.getName()));
         contentDao.save(content);
         return "redirect:/contents";
+    }
+    
+    @GetMapping("deletePost")
+    public String deletePost(HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        contentDao.deleteById(id);
+        
+        return "redirect:/contents";
+    }
+    
+    @GetMapping("editPost")
+    public String editPost(HttpServletRequest request, Model model) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Content c = contentDao.findById(id).orElse(null);
+        model.addAttribute("content", c);
+        
+        return "editPost";
+    }
+    
+    @PostMapping("editPost")
+    public String performEdit(Principal p, Content content) {
+        content.setUser(userDao.findByUsername(p.getName()));
+        contentDao.save(content);
+        
+        return "redirect:/contents";
+    }
+    
+    @GetMapping("addPage")
+    public String getPage(Model model) {
+        model.addAttribute("page", new Content());
+        return "addPage";
+    }
+    
+    @PostMapping("addPage")
+    public String addPage(Principal p, Content page) {
+        page.setUser(userDao.findByUsername(p.getName()));
+        contentDao.save(page);
+        return "redirect:/";
     }
 }
