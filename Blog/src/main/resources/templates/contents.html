@@ -45,17 +45,22 @@
                         <div role="presentation" class="nav-item">
                             <a href="/" class="nav-link">Home</a>
                         </div>
+
+                        <div role="presentation" class="nav-item" th:each="tab : ${pages}">
+                            <a th:href="${'/page/' + tab.id}" class="nav-link" th:text="${tab.pageName}"></a>
+                        </div>
+
                         <div role="presentation" class="nav-item">
-                            <a href="contents" class="nav-link">Blog Feed</a>
+                            <a href="/contents" class="nav-link">Blog Feed</a>
                         </div>
                         <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
-                            <a href="admin" class="nav-link">Admin Menu</a>
+                            <a href="/admin" class="nav-link">Admin Menu</a>
                         </div>
                         <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
-                            <a href="addPost" class="nav-link">Add a Post</a>
+                            <a href="/addPost" class="nav-link">Add a Post</a>
                         </div>
                         <div sec:authorize="isAnonymous()" role="presentation" class="nav-item">
-                            <a href="login" class="nav-link">Login</a>
+                            <a href="/login" class="nav-link">Login</a>
                         </div>
                     </div>
                 </div>

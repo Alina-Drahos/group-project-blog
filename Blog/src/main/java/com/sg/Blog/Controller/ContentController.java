@@ -10,6 +10,7 @@ import com.sg.Blog.dao.UserDao;
 import com.sg.Blog.entity.Content;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
@@ -35,22 +37,65 @@ public class ContentController {
 
     @GetMapping("/")
     public String displayHome(Model model) {
-        Content disclaimer = new Content();
+        Content homePage = new Content();
         List<Content> contents = contentDao.findAllByIsStatic(true);
+        List<Content> pages = new ArrayList<>();
 
         for (Content c : contents) {
-            if (c.getTitle().equalsIgnoreCase("disclaimer")) {
-                disclaimer = c;
+            if (c.getPageName().equalsIgnoreCase("home")) {
+                homePage = c;
             }
         }
-        model.addAttribute("home", disclaimer);
+        
+        for(Content p : contents){
+            if (!p.getPageName().equalsIgnoreCase("home")) {
+                pages.add(p);
+            }
+        }
+        model.addAttribute("pages", pages);
+        model.addAttribute("home", homePage);
         return "index";
+    }
+    
+    @GetMapping("page/{id}")
+    public String setUpPage(@PathVariable Integer id, Model model) {
+        List<Content> allPages = contentDao.findAllByIsStatic(true);
+        Content homePage = new Content();
+        Content page = contentDao.findById(id).orElse(null);
+        List<Content> pages = new ArrayList<>();
+
+        for(Content p : allPages){
+            if (p.getPageName().equalsIgnoreCase("home")) {
+                homePage = p;
+            }
+        }
+        
+        for(Content p : allPages){
+            if (!p.getPageName().equalsIgnoreCase("home")) {
+                pages.add(p);
+            }
+        }
+        
+        model.addAttribute("pages", pages);
+        model.addAttribute("home", homePage);
+        model.addAttribute("page", page);
+        return "staticPages";
     }
 
     @GetMapping("contents")
     public String displayContent(Model model) {
+        List<Content> staticPages = contentDao.findAllByIsStatic(true);
+        List<Content> pages = new ArrayList<>();
+        
+        for(Content p : staticPages){
+            if (!p.getPageName().equalsIgnoreCase("home")) {
+                pages.add(p);
+            }
+        }
+        
         List<Content> contents = contentDao.findAllByIsStatic(false);
         model.addAttribute("contents", contents);
+        model.addAttribute("pages", pages);
 
         return "contents";
     }
@@ -68,6 +113,7 @@ public class ContentController {
             return "addPost";
         }
         content.setUser(userDao.findByUsername(p.getName()));
+        content.setIsStatic(false);
         contentDao.save(content);
         return "redirect:/contents";
     }
@@ -102,14 +148,18 @@ public class ContentController {
 
     @GetMapping("addPage")
     public String getPage(Model model) {
-        model.addAttribute("page", new Content());
+        model.addAttribute("pages", contentDao.findAllByIsStatic(true));
+        model.addAttribute("content", new Content());
+        model.addAttribute("today", LocalDate.now());
         return "addPage";
     }
 
     @PostMapping("addPage")
     public String addPage(Principal p, Content page) {
         page.setUser(userDao.findByUsername(p.getName()));
+        page.setIsStatic(true);
         contentDao.save(page);
         return "redirect:/";
     }
+    
 }

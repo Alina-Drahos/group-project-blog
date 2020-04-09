@@ -17,34 +17,12 @@ and open the template in the editor.
     </head>
     <body>
         <div class="container">
-            <h1>Gaming Blog</h1>
-            <hr/>
-            <div class="navbar">
-                <ul class="nav nav-tabs">
-                    <li role="presentation" class="nav-item">
-                        <a class="nav-link" href="/">
-                            Home
-                        </a>
-                    </li>
-                    <li role="presentation" class="nav-item">
-                        <a class="nav-link" href="contents">
-                            Blog Feed (must have the user role)
-                        </a>
-                    </li>
-                    <li role="presentation" class="nav-item">
-                        <a class="nav-link active" href="admin">
-                            Admin (must have the admin role)
-                        </a>
-                    </li>
-                    <li role="presentation" class="nav-item">
-                        <a class="nav-link" href="addPage">
-                            Add Page
-                        </a>
-                    </li>
-                </ul>    
+            <div class="row m-4">
+                <div class="col text-center">
+                    <h1>Admin Page</h1><hr/>
+                </div>
             </div>
-            <h2>Admin Page</h2>
-            <div sec:authorize="isAuthenticated()">
+            <div class="row my-2 ml-4" sec:authorize="isAuthenticated()">
                 <form class="form-inline" 
                       method="POST" 
                       action="/logout">
@@ -60,26 +38,80 @@ and open the template in the editor.
                             type="submit">Logout</button>
                 </form>
             </div>
+            <div class="navbar">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="nav-item">
+                        <a class="nav-link" href="/">
+                            Home
+                        </a>
+                    </li>
+                    <li role="presentation" class="nav-item">
+                        <a class="nav-link" href="/contents">
+                            Blog Feed
+                        </a>
+                    </li>
+                    <li role="presentation" class="nav-item">
+                        <a class="nav-link active" href="/admin">
+                            Admin Menu
+                        </a>
+                    </li>
+                    <li role="presentation" class="nav-item">
+                        <a class="nav-link" href="/addPage">
+                            Add Page
+                        </a>
+                    </li>
+                </ul>    
+            </div>
         </div>
         <div class="container">
-            <div class="row">
-                <h3>Add User</h3>
+            <div class="row col-5 mt-3">
+                <h3 class="col text-center">Add User</h3>
             </div>
-            <div class="row">
-                <form class="form form-inline" 
-                      method="POST" 
-                      action="addUser">
+   <!--         <div class="row col">
+                <form method="POST" action="addUser">
                     <input type="hidden" 
                            th:name="${_csrf.parameterName}" 
                            th:value="${_csrf.token}"/>&nbsp;
-                    <label for="username">Username:</label>&nbsp;
-                    <input type="text" name="username" id="username">&nbsp;
-                    <label for="password">Password:</label>&nbsp;
-                    <input type="password" name="password" id="password">&nbsp;
-                    <button type="submit">Add User</button>
+                    <div class="row form-group">
+                        <label class="col-form-label" for="username">Username:</label>&nbsp;
+                        <input type="text" class="form-control" name="username" id="username">&nbsp;
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-form-label" for="password">Password:</label>&nbsp;
+                        <input type="password" class="form-control" name="password" id="password">&nbsp;
+                    </div>
+                    <div class="row form-group form-check">
+                        <input type="checkbox" class="form-check-input" name="enabled" id="enabled">&nbsp;
+                        <label class="form-check-label" for="enabled">Enabled</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add User</button>
                 </form>
+            </div>-->
+
+            <div class="row col-5 my-4 border border-dark">
+                <div class="row col m-3">
+                    <form action="/addUser" method="POST">
+                        <input type="hidden" 
+                               th:name="${_csrf.parameterName}" 
+                               th:value="${_csrf.token}"/>&nbsp;
+                        <div class="form-row">
+                            <div class="col form-group">
+                                <label class="col-form-label" for="username">Username:</label>&nbsp;
+                                <input type="text" class="form-control" name="username" id="username"/>&nbsp;
+                            </div>
+
+                            <div class="col form-group">
+                                <label class="col-form-label" for="password">Password:</label>&nbsp;
+                                <input type="text" class="form-control" name="password" id="password"/>&nbsp;
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add User</button>
+                    </form>
+                </div>
             </div>
+
         </div>
+        
         <div class="container">
             <div class ="row">
                 <h3>Users</h3>

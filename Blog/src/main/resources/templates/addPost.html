@@ -25,24 +25,8 @@
                     </div>
                 </div>
 
-                <div class="navbar">
-                    <div class="nav nav-tabs">
-                        <div role="presentation" class="nav-item">
-                            <a href="/" class="nav-link">Home</a>
-                        </div>
-                        <div role="presentation" class="nav-item">
-                            <a href="contents" class="nav-link">Blog Feed</a>
-                        </div>
-                        <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
-                            <a href="admin" class="nav-link">Admin Menu</a>
-                        </div>
-                        <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
-                            <a href="addPost" class="nav-link">Add a Post</a>
-                        </div>
-                        <div sec:authorize="isAnonymous()" role="presentation" class="nav-item">
-                            <a href="login" class="nav-link">Login</a>
-                        </div>
-                    </div>
+                <div class="row m-4">
+                    <button class="btn btn-outline-secondary"><a href="/contents">< Back</a></button>
                 </div>
 
                 <div class="row m-4">

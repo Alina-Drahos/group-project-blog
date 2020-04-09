@@ -21,15 +21,20 @@
             <div class="container">
                 <div class="row m-4">
                     <div class="col text-center">
-                        <h1>Game Blog</h1><hr/>
+                        <h1>Add Page</h1><hr/>
                     </div>
                 </div>
                 
-                <div class="navbar">
+<!--                <div class="navbar">
                     <div class="nav nav-tabs">
                         <div role="presentation" class="nav-item">
                             <a href="/" class="nav-link">Home</a>
                         </div>
+                        
+                        <div role="presentation" class="nav-item" th:each="tab : ${pages}">
+                            <a th:href="${'page/' + tab.id}" class="nav-link" th:text="${tab.pageName}"></a>
+                        </div>
+                        
                         <div role="presentation" class="nav-item">
                             <a href="contents" class="nav-link">Blog Feed</a>
                         </div>
@@ -43,13 +48,12 @@
                             <a href="login" class="nav-link">Login</a>
                         </div>
                     </div>
-                </div>
-
+                </div>-->
+                
                 <div class="row m-4">
-                    <div class="col text-center m-3">
-                        <h3>Add Page</h3>
-                    </div>
+                    <button class="btn btn-outline-secondary"><a href="/admin">< Back</a></button>
                 </div>
+                
                 <div class="row m-4">
                     <div class="row col m-3">
                         <form action="/addPage" method="POST">
@@ -64,11 +68,6 @@
                             <div class="row form-group m-2">
                                 <label for="title" class="col-form-label col-3">Title: </label>
                                 <input type="text" class="col-7 form-control" id="title" name="title" placeholder="Enter title"/>
-                            </div>
-                            
-                            <div class="row form-group m-2">
-                                <label for="date" class="col-form-label col-3">Published: </label>
-                                <input required id="date" type="date" class="col-7 form-control" name="datePublished"/>
                             </div>
                             
                             <textarea id="mytextarea" class="form-control m-2" name="body" placeholder="Enter body"></textarea>

@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <div class="row my-2 ml-4" sec:authorize="isAuthenticated()">
+            <div class="row m-2" sec:authorize="isAuthenticated()">
                 <form class="form-inline" 
                       method="POST" 
                       action="/logout">
@@ -65,10 +65,10 @@
             </div>
 
             <div class="row m-4">
-                <h2 style="font-family: georgia; font-style: italic" class="col text-left" th:text="${home.title}"></h2>
+                <h2 style="font-family: georgia; font-style: italic" class="col text-left" th:text="${page.title}"></h2>
             </div>
-            <div class="row m-4">
-                <p class="col-8 text-left" th:text="${home.body}"></p>
+            <div class="row col-8 m-4">
+                <p class="text-left" th:utext="${page.body}"></p>
             </div>
 
             <footer class="page-footer">
