@@ -24,7 +24,7 @@
                         <h1>Game Blog</h1><hr/>
                     </div>
                 </div>
-                
+
                 <div class="navbar">
                     <div class="nav nav-tabs">
                         <div role="presentation" class="nav-item">
@@ -54,19 +54,27 @@
                     <div class="row col m-3">
                         <form action="/addPost" method="POST">
                             <input type="hidden" 
-                           th:name="${_csrf.parameterName}" 
-                           th:value="${_csrf.token}"/>
+                                   th:name="${_csrf.parameterName}" 
+                                   th:value="${_csrf.token}"/>
                             <div class="row form-group m-2">
-                                <label for="title" class="col-form-label col-2">Title: </label>
-                                <input type="text" class="col-6 form-control" id="title" name="title" placeholder="Enter title"/>
+                                <label for="title" class="col-form-label col-3">Title: </label>
+                                <input type="text" class="col-7 form-control" id="title" name="title" placeholder="Enter title"/>
                             </div>
-                            
+                            <div id="err" th:if="${#fields.hasErrors('content.title')}">
+                                <p th:each="error : ${#fields.errors('content.title')}" class=" text-center alert alert-danger" 
+                                   th:text="${error}"></p>
+                            </div>
+
                             <div class="row form-group m-2">
-                                <label for="date" class="col-form-label col-2">Published: </label>
-                                <input required id="date" type="date" class="col-6 form-control" name="datePublished"/>
+                                <label for="date" class="col-form-label col-3">Published: </label>
+                                <input required id="date" type="date" class="col-7 form-control" th:value="${today}" name="datePublished"/>
                             </div>
-                            
+
                             <textarea id="mytextarea" class="form-control m-2" name="body" placeholder="Enter body"></textarea>
+                            <div id="err" th:if="${#fields.hasErrors('content.body')}">
+                                <p th:each="error : ${#fields.errors('content.body')}" class="text-center alert alert-danger" 
+                                   th:text="${error}"></p>
+                            </div>
 
                             <button type="submit" class="btn btn-primary m-2">Submit</button>
                         </form>

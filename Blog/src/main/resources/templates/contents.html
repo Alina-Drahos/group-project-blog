@@ -60,28 +60,6 @@
                     </div>
                 </div>
 
-                <!--                <div class="row m-2 border border-dark">
-                                    <div class="col text-center m-3">
-                                        <a href="/" class="btn btn-outline-primary btn-lg">Home</a>
-                                    </div>
-                                    <div class="col text-center m-3">
-                                        <a href="contents" class="btn btn-outline-primary btn-lg">Blog Feed</a>
-                                    </div>
-                                    <div class="row form-group text-center m-3">
-                                        <label for="search" class="m-2" style="font-size: 20px">Search: </label>
-                                        <input type="text" id="search" placeholder="#Search"/>
-                                    </div>
-                                    <div class="col text-center m-3">
-                                        <a href="login" class="btn btn-outline-primary btn-lg">Log In</a>
-                                    </div>
-                
-                                    <div sec:authorize="hasRole('ROLE_ADMIN')">
-                                        <div class="col text-center m-3">
-                                            <a href="addPost" class="btn btn-outline-primary btn-lg">Add a Post</a>
-                                        </div>
-                                    </div>
-                                </div>-->
-
                 <div class="col-8 border m-4" th:each="blog : ${contents}">
                     <div class="row my-4 mr-4 ml-2">
                         <div class="col-11">
@@ -94,7 +72,7 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" th:href="@{/editPost(id=${blog.id})}">Edit</a>
                                     <div class="dropdown-divider"></div>
-                                    <a type="button" class="dropdown-item" th:href="@{/deletePost(id=${blog.id})}">Delete</a>
+                                    <button type="button" class="dropdown-item" data-toggle='modal' th:data-target="${'#delete' + blog.id}">Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -105,24 +83,6 @@
                     <div class="row my-2 mx-4">
                         <p class="text-left" th:utext="${blog.body}"></p>
                     </div>
-
-<!--                    <div class='modal fade' tabindex='-1' role='dialog' id='deleteModal'>
-                        <div class='modal-dialog' role='document'>
-                            <div class='modal-content'>
-                                <div class='modal-header'>
-                                    <h5 class='modal-title'>Confirmation</h5>
-                                </div>
-                                <div class='modal-body'>
-                                    <p>Are you sure you want to delete this post?</p>
-                                </div>
-                                <div class='modal-footer'>
-                                    <button type='button' class='btn btn-secondary' data-dismiss='modal' >Cancel</button>
-                                    <button th:href="@{/deletePost(id=${blog.id})}" type='button' class='btn btn-danger' id='deleteOkay'>Delete</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
-
                 </div>
 
                 <footer class="page-footer">
@@ -132,6 +92,23 @@
                 </footer>
             </div>
 
+        </div>
+
+        <div class='modal fade' tabindex='-1' role='dialog' th:each="blog : ${contents}" th:id="${'delete' + blog.id}">
+            <div class='modal-dialog' role='document'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <h5 class='modal-title'>Confirmation</h5>
+                    </div>
+                    <div class='modal-body'>
+                        <p>Are you sure you want to delete this post?</p>
+                    </div>
+                    <div class='modal-footer'>
+                        <button type='button' class='btn btn-secondary' data-dismiss='modal' >Cancel</button>
+                        <a th:href="@{/deletePost(id=${blog.id})}" type='button' class='btn btn-danger' id='deleteOkay'>Delete</a>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- End main body -->

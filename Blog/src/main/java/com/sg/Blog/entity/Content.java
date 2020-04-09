@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -29,9 +30,14 @@ public class Content {
     @Id
     private int id;
     
+    @Column(name = "pagename")
+    private String pageName;
+    
+    @NotBlank(message = "Must Enter a Title")
     @Column(nullable = false)
     private String title;
     
+    @NotBlank(message = "Cannot have empty Body")
     @Column(nullable = false)
     private String body;
     
@@ -61,6 +67,14 @@ public class Content {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getPageName() {
+        return pageName;
+    }
+
+    public void setPageName(String pageName) {
+        this.pageName = pageName;
     }
 
     public String getTitle() {
@@ -121,15 +135,16 @@ public class Content {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 89 * hash + this.id;
-        hash = 89 * hash + Objects.hashCode(this.title);
-        hash = 89 * hash + Objects.hashCode(this.body);
-        hash = 89 * hash + (this.approved ? 1 : 0);
-        hash = 89 * hash + (this.isStatic ? 1 : 0);
-        hash = 89 * hash + Objects.hashCode(this.datePublished);
-        hash = 89 * hash + Objects.hashCode(this.user);
-        hash = 89 * hash + Objects.hashCode(this.hashtags);
+        int hash = 5;
+        hash = 71 * hash + this.id;
+        hash = 71 * hash + Objects.hashCode(this.pageName);
+        hash = 71 * hash + Objects.hashCode(this.title);
+        hash = 71 * hash + Objects.hashCode(this.body);
+        hash = 71 * hash + (this.approved ? 1 : 0);
+        hash = 71 * hash + (this.isStatic ? 1 : 0);
+        hash = 71 * hash + Objects.hashCode(this.datePublished);
+        hash = 71 * hash + Objects.hashCode(this.user);
+        hash = 71 * hash + Objects.hashCode(this.hashtags);
         return hash;
     }
 
@@ -154,6 +169,9 @@ public class Content {
         if (this.isStatic != other.isStatic) {
             return false;
         }
+        if (!Objects.equals(this.pageName, other.pageName)) {
+            return false;
+        }
         if (!Objects.equals(this.title, other.title)) {
             return false;
         }
@@ -171,7 +189,5 @@ public class Content {
         }
         return true;
     }
-
     
-
 }

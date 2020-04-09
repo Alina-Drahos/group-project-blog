@@ -57,13 +57,18 @@
                            th:name="${_csrf.parameterName}" 
                            th:value="${_csrf.token}"/>
                             <div class="row form-group m-2">
-                                <label for="title" class="col-form-label col-2">Title: </label>
-                                <input type="text" class="col-6 form-control" id="title" name="title" placeholder="Enter title"/>
+                                <label for="page" class="col-form-label col-3">Page Name: </label>
+                                <input type="text" class="col-7 form-control" id="page" name="pageName" placeholder="Enter Page Name"/>
                             </div>
                             
                             <div class="row form-group m-2">
-                                <label for="date" class="col-form-label col-2">Published: </label>
-                                <input required id="date" type="date" class="col-6 form-control" name="datePublished"/>
+                                <label for="title" class="col-form-label col-3">Title: </label>
+                                <input type="text" class="col-7 form-control" id="title" name="title" placeholder="Enter title"/>
+                            </div>
+                            
+                            <div class="row form-group m-2">
+                                <label for="date" class="col-form-label col-3">Published: </label>
+                                <input required id="date" type="date" class="col-7 form-control" name="datePublished"/>
                             </div>
                             
                             <textarea id="mytextarea" class="form-control m-2" name="body" placeholder="Enter body"></textarea>

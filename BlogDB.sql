@@ -16,6 +16,7 @@ create table Content(
     userId int not null,
     isstatic tinyint not null,
     datepublished DATE,
+    pageName varchar(50),
     title varchar(45) not null,
     body varchar(10000) not null,
     approved tinyint not null,
