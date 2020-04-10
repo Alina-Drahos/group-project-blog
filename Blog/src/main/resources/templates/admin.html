@@ -38,6 +38,11 @@ and open the template in the editor.
                             type="submit">Logout</button>
                 </form>
             </div>
+            <div class="col-12 m-1 text-center" 
+                 th:if="${!errors.isEmpty()}">
+                <p class="alert alert-danger" th:each="error : ${errors}" 
+                   th:text="${error.message}">Error message</p>
+            </div>
             <div class="navbar">
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="nav-item">
@@ -67,26 +72,26 @@ and open the template in the editor.
             <div class="row col-5 mt-3">
                 <h3 class="col text-center">Add User</h3>
             </div>
-   <!--         <div class="row col">
-                <form method="POST" action="addUser">
-                    <input type="hidden" 
-                           th:name="${_csrf.parameterName}" 
-                           th:value="${_csrf.token}"/>&nbsp;
-                    <div class="row form-group">
-                        <label class="col-form-label" for="username">Username:</label>&nbsp;
-                        <input type="text" class="form-control" name="username" id="username">&nbsp;
-                    </div>
-                    <div class="row form-group">
-                        <label class="col-form-label" for="password">Password:</label>&nbsp;
-                        <input type="password" class="form-control" name="password" id="password">&nbsp;
-                    </div>
-                    <div class="row form-group form-check">
-                        <input type="checkbox" class="form-check-input" name="enabled" id="enabled">&nbsp;
-                        <label class="form-check-label" for="enabled">Enabled</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add User</button>
-                </form>
-            </div>-->
+            <!--         <div class="row col">
+                         <form method="POST" action="addUser">
+                             <input type="hidden" 
+                                    th:name="${_csrf.parameterName}" 
+                                    th:value="${_csrf.token}"/>&nbsp;
+                             <div class="row form-group">
+                                 <label class="col-form-label" for="username">Username:</label>&nbsp;
+                                 <input type="text" class="form-control" name="username" id="username">&nbsp;
+                             </div>
+                             <div class="row form-group">
+                                 <label class="col-form-label" for="password">Password:</label>&nbsp;
+                                 <input type="password" class="form-control" name="password" id="password">&nbsp;
+                             </div>
+                             <div class="row form-group form-check">
+                                 <input type="checkbox" class="form-check-input" name="enabled" id="enabled">&nbsp;
+                                 <label class="form-check-label" for="enabled">Enabled</label>
+                             </div>
+                             <button type="submit" class="btn btn-primary">Add User</button>
+                         </form>
+                     </div>-->
 
             <div class="row col-5 my-4 border border-dark">
                 <div class="row col m-3">
@@ -111,7 +116,7 @@ and open the template in the editor.
             </div>
 
         </div>
-        
+
         <div class="container">
             <div class ="row">
                 <h3>Users</h3>
