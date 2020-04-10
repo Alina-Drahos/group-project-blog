@@ -15,16 +15,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.thymeleaf.util.Validate;
 
 /**
  *
- * 
+ *
  */
 @Controller
 public class userController {
@@ -41,6 +45,8 @@ public class userController {
     @Autowired
     ContentDao contentDao;
 
+    Set<ConstraintViolation<User>> violations = new HashSet<>();
+
     @GetMapping("/admin")
     public String displayAdminPage(Model model) {
         List<Content> staticPages = contentDao.findAllByIsStatic(true);
@@ -53,20 +59,34 @@ public class userController {
         
         model.addAttribute("pages", pages);
         model.addAttribute("users", users.findAll());
+        model.addAttribute("errors", violations);
         return "admin";
     }
 
     @PostMapping("/addUser")
     public String addUser(String username, String password) {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(encoder.encode(password));
-        user.setEnabled(true);
+        List<User> allUsers = users.findAll();
+        List<String> usernames = new ArrayList<>();
+        for (User currentUser : allUsers) {
+            usernames.add(currentUser.getUsername());
+        }
+        if (usernames.contains(username)) {
+            //return error that username already exists.
+        } else {
+            User user = new User();
+            user.setUsername(username);
+            user.setPassword(encoder.encode(password));
+            user.setEnabled(true);
 
-        user.setRoles(roles.findAllByRole("ROLE_USER"));
+            user.setRoles(roles.findAllByRole("ROLE_USER"));
 
-        users.save(user);
+            Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+            violations = validate.validate(user);
 
+            if (violations.isEmpty()) {
+                users.save(user);
+            }
+        }
         return "redirect:/admin";
     }
 
@@ -85,12 +105,18 @@ public class userController {
             user.setEnabled(false);
         }
         Set<Role> roleList = new HashSet<>();
-        for (String roleId : roleIdList) {
-            Role role = roles.findById(Integer.parseInt(roleId)).orElse(null);
-            roleList.add(role);
+        if (roleIdList != null) {
+            for (String roleId : roleIdList) {
+                Role role = roles.findById(Integer.parseInt(roleId)).orElse(null);
+                roleList.add(role);
+            }
         }
         user.setRoles(roleList);
-        users.save(user);
+        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+        violations = validate.validate(user);
+        if (violations.isEmpty()) {
+            users.save(user);
+        }
 
         return "redirect:/admin";
     }
@@ -101,7 +127,11 @@ public class userController {
 
         if (password.equals(confirmPassword)) {
             user.setPassword(encoder.encode(password));
-            users.save(user);
+            Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+            violations = validate.validate(user);
+            if (violations.isEmpty()) {
+                users.save(user);
+            }
             return "redirect:/admin";
         } else {
             return "redirect:/editUser?id=" + id + "&error=1";
@@ -115,6 +145,7 @@ public class userController {
 
         model.addAttribute("user", user);
         model.addAttribute("roles", roleList);
+        model.addAttribute("errors", violations);
 
         if (error != null) {
             if (error == 1) {

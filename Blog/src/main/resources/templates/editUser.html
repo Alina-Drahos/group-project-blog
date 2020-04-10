@@ -18,100 +18,105 @@
                     <h1>Edit User</h1><hr/>
                 </div>
             </div>
-<!--            <div class="navbar">
-                <ul class="nav nav-tabs">
-                    <li role="presentation" class="nav-item">
-                        <a class="nav-link" href="/">
-                            Home
-                        </a>
-                    </li>
-                    <li role="presentation" class="nav-item">
-                        <a class="nav-link" href="/contents">
-                            Blog Feed
-                        </a>
-                    </li>
-                    <li role="presentation" class="nav-item">
-                        <a class="nav-link active" href="/admin">
-                            Admin Menu
-                        </a>
-                    </li>
-                </ul>    
-            </div>-->
+            <!--            <div class="navbar">
+                            <ul class="nav nav-tabs">
+                                <li role="presentation" class="nav-item">
+                                    <a class="nav-link" href="/">
+                                        Home
+                                    </a>
+                                </li>
+                                <li role="presentation" class="nav-item">
+                                    <a class="nav-link" href="/contents">
+                                        Blog Feed
+                                    </a>
+                                </li>
+                                <li role="presentation" class="nav-item">
+                                    <a class="nav-link active" href="/admin">
+                                        Admin Menu
+                                    </a>
+                                </li>
+                            </ul>    
+                        </div>-->
 
             <div class="row m-4">
                 <button class="btn btn-outline-secondary"><a href="/admin">< Back</a></button>
             </div>
-<!--            <div sec:authorize="isAuthenticated()">
-                <form class="form-inline" 
-                      method="POST" 
-                      action="/logout">
-                    <input type="hidden" 
-                           th:name="${_csrf.parameterName}" 
-                           th:value="${_csrf.token}"/>
-                    <label for="submit">
-                        Hello : <span th:text="${#authentication.name}">
-                        </span>&nbsp;&nbsp;&nbsp;|
-                    </label>
-                    <button class="btn btn-link" 
-                            id="submit" 
-                            type="submit">Logout</button>
-                </form>-->
-                <div class="container">
-                    <div class="row"> 
-                        <h3>Update User</h3>
-                    </div>
-                    <div class="row">
-                        <form method="POST" action="editUser" class="col-md-10">
-                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                            <input type="hidden" name="id" th:value ="${user.id}"/>
-                            <div class="form-group row">
-                                <label for="username" class="col-md-4 control-label">Username:</label>
-                                <div class="col-md-8">
-                                    <input type="text" 
-                                           class="form-control" 
-                                           id="username"
-                                           name="username" 
-                                           placeholder="Username"
-                                           th:value="${user.username}"
-                                           disabled/>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="enabled" class="col-md-4 control-label">Enabled:</label>
-                                <div class="col-md-8">
-                                    <input type="checkbox"  
-                                           id="enabled"
-                                           name="enabled"
-                                           th:checked="${user.enabled}"/>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="roleIdList" class="col-md-4 control-label">Roles:</label>
-                                <div class="col-md-8">
-                                    <select id="roleIdList" 
-                                            name="roleIdList" 
-                                            multiple="multiple" 
-                                            class="form-control">
-                                        <div th:each="currentRole : ${roles}">
-                                            <option th:value="${currentRole.id}" 
-                                                    th:selected=="${user.roles.contains(currentRole)}"
-                                                    th:text="${currentRole.role}">
-                                            </option>
-                                        </div>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-offset-4 col-md-8">
-                                    <input type="submit" 
-                                           class="btn btn-primary" 
-                                           id="search-button" 
-                                           value="Update User"/>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+            <!--            <div sec:authorize="isAuthenticated()">
+                            <form class="form-inline" 
+                                  method="POST" 
+                                  action="/logout">
+                                <input type="hidden" 
+                                       th:name="${_csrf.parameterName}" 
+                                       th:value="${_csrf.token}"/>
+                                <label for="submit">
+                                    Hello : <span th:text="${#authentication.name}">
+                                    </span>&nbsp;&nbsp;&nbsp;|
+                                </label>
+                                <button class="btn btn-link" 
+                                        id="submit" 
+                                        type="submit">Logout</button>
+                            </form>-->
+            <div class="container">
+                <div class="col-12 m-1 text-center" 
+                     th:if="${!errors.isEmpty()}">
+                    <p class="alert alert-danger" th:each="error : ${errors}" 
+                       th:text="${error.message}">Error message</p>
                 </div>
+                <div class="row"> 
+                    <h3>Update User</h3>
+                </div>
+                <div class="row">
+                    <form method="POST" action="editUser" class="col-md-10">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="hidden" name="id" th:value ="${user.id}"/>
+                        <div class="form-group row">
+                            <label for="username" class="col-md-4 control-label">Username:</label>
+                            <div class="col-md-8">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="username"
+                                       name="username" 
+                                       placeholder="Username"
+                                       th:value="${user.username}"
+                                       disabled/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="enabled" class="col-md-4 control-label">Enabled:</label>
+                            <div class="col-md-8">
+                                <input type="checkbox"  
+                                       id="enabled"
+                                       name="enabled"
+                                       th:checked="${user.enabled}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="roleIdList" class="col-md-4 control-label">Roles:</label>
+                            <div class="col-md-8">
+                                <select id="roleIdList" 
+                                        name="roleIdList" 
+                                        multiple="multiple" 
+                                        class="form-control">
+                                    <div th:each="currentRole : ${roles}">
+                                        <option th:value="${currentRole.id}" 
+                                                th:selected=="${user.roles.contains(currentRole)}"
+                                                th:text="${currentRole.role}">
+                                        </option>
+                                    </div>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-offset-4 col-md-8">
+                                <input type="submit" 
+                                       class="btn btn-primary" 
+                                       id="search-button" 
+                                       value="Update User"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <!--</div>-->
         </div>
         <div class="container">
