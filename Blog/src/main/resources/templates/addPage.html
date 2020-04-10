@@ -25,31 +25,6 @@
                     </div>
                 </div>
                 
-<!--                <div class="navbar">
-                    <div class="nav nav-tabs">
-                        <div role="presentation" class="nav-item">
-                            <a href="/" class="nav-link">Home</a>
-                        </div>
-                        
-                        <div role="presentation" class="nav-item" th:each="tab : ${pages}">
-                            <a th:href="${'page/' + tab.id}" class="nav-link" th:text="${tab.pageName}"></a>
-                        </div>
-                        
-                        <div role="presentation" class="nav-item">
-                            <a href="contents" class="nav-link">Blog Feed</a>
-                        </div>
-                        <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
-                            <a href="admin" class="nav-link">Admin Menu</a>
-                        </div>
-                        <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
-                            <a href="addPost" class="nav-link">Add a Post</a>
-                        </div>
-                        <div sec:authorize="isAnonymous()" role="presentation" class="nav-item">
-                            <a href="login" class="nav-link">Login</a>
-                        </div>
-                    </div>
-                </div>-->
-                
                 <div class="row m-4">
                     <button class="btn btn-outline-secondary"><a href="/admin">< Back</a></button>
                 </div>
@@ -63,6 +38,10 @@
                             <div class="row form-group m-2">
                                 <label for="page" class="col-form-label col-3">Page Name: </label>
                                 <input type="text" class="col-7 form-control" id="page" name="pageName" placeholder="Enter Page Name"/>
+                            </div>
+                            <div id="err" th:if="${#fields.hasErrors('content.pageName')}">
+                                <p th:each="error : ${#fields.errors('content.pageName')}" class="text-center alert alert-danger" 
+                                   th:text="${error}"></p>
                             </div>
                             
                             <div class="row form-group m-2">

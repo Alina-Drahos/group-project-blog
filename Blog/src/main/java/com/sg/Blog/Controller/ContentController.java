@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +44,7 @@ public class ContentController {
 
     @Autowired
     TagDao tagDao;
-    
+
     @Autowired
     RoleDao roleDao;
 
@@ -146,7 +147,7 @@ public class ContentController {
                 }
             }
         }
-        
+
         User user = userDao.findByUsername(p.getName());
         content.setHashtags(tags);
         content.setUser(user);
@@ -205,45 +206,51 @@ public class ContentController {
 
     @GetMapping("addPage")
     public String getPage(Model model) {
-        model.addAttribute("pages", contentDao.findAllByIsStatic(true));
         model.addAttribute("content", new Content());
-        model.addAttribute("today", LocalDate.now());
         return "addPage";
     }
 
     @PostMapping("addPage")
-    public String addPage(Principal p, Content page) {
+    public String addPage(Principal p, Content page, BindingResult result, Model model) {
+        for (Content c : contentDao.findAllByIsStatic(true)) {
+            if (c.getPageName().equalsIgnoreCase(page.getPageName())) {
+                FieldError error = new FieldError("content", "page", "That Page Already Exist");
+                result.addError(error);
+                model.addAttribute("content", new Content());
+                return "redirect:/addPage";
+            }
+        }
         page.setUser(userDao.findByUsername(p.getName()));
         page.setIsStatic(true);
         page.setApproved(false);
         contentDao.save(page);
         return "redirect:/";
     }
-    
+
     @GetMapping("/postApproval")
     public String approvedPosts(Model model) {
         List<Content> allPosts = contentDao.findAllByApproved(false);
         List<Content> staticPages = contentDao.findAllByIsStatic(true);
-        
+
         List<Content> notApproved = new ArrayList<>();
-        for(Content c : allPosts) {
+        for (Content c : allPosts) {
             if (c.isIsStatic() == false) {
                 notApproved.add(c);
             }
         }
-        
+
         List<Content> pages = new ArrayList<>();
         for (Content p : staticPages) {
             if (!p.getPageName().equalsIgnoreCase("home")) {
                 pages.add(p);
             }
         }
-        
+
         model.addAttribute("pages", pages);
         model.addAttribute("posts", notApproved);
         return "postApproval";
     }
-    
+
     @PostMapping("/postApproval")
     public String sendPost(Integer id) {
         Content content = contentDao.findById(id).orElse(null);
