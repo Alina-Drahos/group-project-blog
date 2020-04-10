@@ -12,75 +12,78 @@ and open the template in the editor.
         <!-- Required meta tags -->
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-            <title>Game Blog: login</title>
+            <title>Game Blog: Login</title>
     </head>
     <body>
         <div class="container">
-            <h1>Hello Security</h1>
+            <div class="row m-4">
+                <div class="col text-center">
+                    <h1>Game Blog: Login</h1>
+                </div>
+            </div>
             <hr/>
             <h2>Login Page</h2>
             <div sec:authorize="isAuthenticated()">
-                <form class="form-inline" 
-                      method="POST" 
+                <form class="form-inline"
+                      method="POST"
                       action="/logout">
-                    <input type="hidden" 
-                           th:name="${_csrf.parameterName}" 
+                    <input type="hidden"
+                           th:name="${_csrf.parameterName}"
                            th:value="${_csrf.token}"/>
                     <label for="submit">
-                        Hello : <span th:text="${#authentication.name}">
+                        Welcome : <span th:text="${#authentication.name}">
                         </span>&nbsp;&nbsp;&nbsp;|
                     </label>
-                    <button class="btn btn-link" 
-                            id="submit" 
+                    <button class="btn btn-link"
+                            id="submit"
                             type="submit">Logout</button>
                 </form>
             </div>
-
-<h3 th:if="${#request.getParameter('login_error') == '1'}">
-                Wrong id or password!</h3>
-
-            <form class="form-horizontal" 
-                  role="form" 
-                  method="post" 
-                  action="login">
-                <div class="form-group">
-                    <label for="username" class="col-md-4 control-label">Username:</label>
-                    <div class="col-md-8">
-                        <input type="text" 
-                               class="form-control" 
-                               id="username"
-                               name="username" 
-                               placeholder="Username"/>
-                    </div>
+            <h3 th:if="${#request.getParameter('login_error') == '1'}">
+                Wrong Username or Password</h3>
+            <div class="row col-5 my-4 border border-dark">
+                <div class="row col m-3">
+                    <form class="form-horizontal"
+                          role="form"
+                          method="post"
+                          action="login">
+                        <div class="form-group">
+                            <label for="username" class="col-md-4 control-label">Username:</label>
+                            <div class="col-md-8">
+                                <input type="text"
+                                       class="form-control"
+                                       id="username"
+                                       name="username"
+                                       placeholder="Username"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-md-4 control-label">Password:</label>
+                            <div class="col-md-8">
+                                <input type="password"
+                                       class="form-control"
+                                       id="password"
+                                       name="password"
+                                       placeholder="Password"/>
+                            </div>
+                        </div>
+                        <input type="hidden"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}"/>
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8">
+                                <input type="submit"
+                                       class="btn btn-primary"
+                                       id="search-button"
+                                       value="Sign In"/>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="password" class="col-md-4 control-label">Password:</label>
-                    <div class="col-md-8">
-                        <input type="password" 
-                               class="form-control" 
-                               id="password"
-                               name="password" 
-                               placeholder="Password"/>
-                    </div>
-                </div>
-                <input type="hidden"                        
-                       th:name="${_csrf.parameterName}"
-                       th:value="${_csrf.token}"/>
-                <div class="form-group">
-                    <div class="col-md-offset-4 col-md-8">
-                        <input type="submit" 
-                               class="btn btn-primary" 
-                               id="search-button" 
-                               value="Sign In"/>
-                    </div>
-                </div>
-            </form>   
+            </div>
         </div>
-
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
