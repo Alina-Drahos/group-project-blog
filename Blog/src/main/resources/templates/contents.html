@@ -14,89 +14,109 @@
     </head>
     <body>
         <!-- Main Body of Page -->
-        <div sec:authorize="isAuthenticated()">
 
-            <div class="container">
-                <div class="row m-4">
-                    <div class="col text-center">
-                        <h1>Game Blog</h1><hr/>
+        <div class="container">
+            <div class="row m-4">
+                <div class="col text-center">
+                    <h1>Game Blog</h1><hr/>
+                </div>
+            </div>
+
+            <div class="row my-2 ml-4" sec:authorize="isAuthenticated()">
+                <form class="form-inline" 
+                      method="POST" 
+                      action="/logout">
+                    <input type="hidden" 
+                           th:name="${_csrf.parameterName}" 
+                           th:value="${_csrf.token}"/>
+                    <label for="submit">
+                        Hello : <span th:text="${#authentication.name}">
+                        </span>&nbsp;&nbsp;&nbsp;|
+                    </label>
+                    <button class="btn btn-link" 
+                            id="submit" 
+                            type="submit">Logout</button>
+                </form>
+            </div>
+
+            <div class="navbar">
+                <div class="nav nav-tabs">
+                    <div role="presentation" class="nav-item">
+                        <a href="/" class="nav-link">Home</a>
+                    </div>
+
+                    <div role="presentation" class="nav-item" th:each="tab : ${pages}">
+                        <a th:href="${'/page/' + tab.id}" class="nav-link" th:text="${tab.pageName}"></a>
+                    </div>
+
+                    <div role="presentation" class="nav-item">
+                        <a href="/contents" class="nav-link active">Blog Feed</a>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
+                        <a href="/admin" class="nav-link">Admin Menu</a>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_USER')" role="presentation" class="nav-item">
+                        <a href="/addPost" class="nav-link">Add a Post</a>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
+                        <a class="nav-link" href="/postApproval">Approvals</a>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
+                        <a class="nav-link" href="/addPage">Add Page</a>
+                    </div>
+                    <div sec:authorize="isAnonymous()" role="presentation" class="nav-item">
+                        <a href="/login" class="nav-link">Login</a>
                     </div>
                 </div>
+            </div>
 
-                <div class="row m-2" sec:authorize="isAuthenticated()">
-                    <form class="form-inline" 
-                          method="POST" 
-                          action="/logout">
-                        <input type="hidden" 
-                               th:name="${_csrf.parameterName}" 
-                               th:value="${_csrf.token}"/>
-                        <label for="submit">
-                            Hello : <span th:text="${#authentication.name}">
-                            </span>&nbsp;&nbsp;&nbsp;|
-                        </label>
-                        <button class="btn btn-link" 
-                                id="submit" 
-                                type="submit">Logout</button>
-                    </form>
-                </div>
-
-                <div class="navbar">
-                    <div class="nav nav-tabs">
-                        <div role="presentation" class="nav-item">
-                            <a href="/" class="nav-link">Home</a>
-                        </div>
-
-                        <div role="presentation" class="nav-item" th:each="tab : ${pages}">
-                            <a th:href="${'/page/' + tab.id}" class="nav-link" th:text="${tab.pageName}"></a>
-                        </div>
-
-                        <div role="presentation" class="nav-item">
-                            <a href="/contents" class="nav-link">Blog Feed</a>
-                        </div>
-                        <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
-                            <a href="/admin" class="nav-link">Admin Menu</a>
-                        </div>
-                        <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
-                            <a href="/addPost" class="nav-link">Add a Post</a>
-                        </div>
-                        <div sec:authorize="isAnonymous()" role="presentation" class="nav-item">
-                            <a href="/login" class="nav-link">Login</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-8 border m-4" th:each="blog : ${contents}">
-                    <div class="row my-4 mr-4 ml-2">
-                        <div class="col-11">
-                            <h2 style="font-family: georgia; font-style: italic" class="text-left" th:text="${blog.title}"></h2>
-                        </div>
-                        <div sec:authorize="hasRole('ROLE_ADMIN')" class="col-1">
-                            <div class="dropdown">
-                                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" th:href="@{/editPost(id=${blog.id})}">Edit</a>
-                                    <div class="dropdown-divider"></div>
-                                    <button type="button" class="dropdown-item" data-toggle='modal' th:data-target="${'#delete' + blog.id}">Delete</button>
+            <div class ="row">
+                <div class="col-8">
+                    <div class="border border-dark m-4" th:each="blog : ${contents}">
+                        <div class="row my-4 mr-4 ml-2">
+                            <div class="col-11">
+                                <h2 style="font-family: georgia; font-style: italic" class="text-left" th:text="${blog.title}"></h2>
+                            </div>
+                            <div sec:authorize="hasRole('ROLE_ADMIN')" class="col-1">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" th:href="@{/editPost(id=${blog.id})}">Edit</a>
+                                        <div class="dropdown-divider"></div>
+                                        <button type="button" class="dropdown-item" data-toggle='modal' th:data-target="${'#delete' + blog.id}">Delete</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mx-4">
-                        <small><p th:text="${blog.datePublished}"></p></small>
-                    </div>
-                    <div class="row my-2 mx-4">
-                        <p class="text-left" th:utext="${blog.body}"></p>
+                        <div class="row mx-4">
+                            <small><p th:text="${blog.datePublished}"></p></small>
+                        </div>
+                        <div class="row my-2 mx-4">
+                            <p class="text-left" th:utext="${blog.body}"></p>
+                        </div>
                     </div>
                 </div>
 
-                <footer class="page-footer">
-                    <div class="col text-center">
-                        <small>Copyright &copy; Game Blog</small>
+                <div class="col-3">
+                    <div class="border border-dark m-4">
+                        <h4 class="col text-center mt-2">Search</h4><hr/>
+                        <form action="/contents/hashtag" method="GET" class="my-2 my-lg-0">
+                            <input type="hidden" 
+                                   th:name="${_csrf.parameterName}" 
+                                   th:value="${_csrf.token}"/>
+                            <input class="form-control col-10 m-2" type="search" name="hashtag" placeholder="#Hashtag" aria-label="Search"/>
+                            <button class="btn btn-primary m-2" type="submit">&#128269;</button>
+                        </form>
                     </div>
-                </footer>
+                </div>
             </div>
 
+            <footer class="page-footer">
+                <div class="col text-center">
+                    <small>Copyright &copy; Game Blog</small>
+                </div>
+            </footer>
         </div>
 
         <div class='modal fade' tabindex='-1' role='dialog' th:each="blog : ${contents}" th:id="${'delete' + blog.id}">

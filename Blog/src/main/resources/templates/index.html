@@ -42,7 +42,7 @@
             <div class="navbar">
                 <div class="nav nav-tabs">
                     <div role="presentation" class="nav-item">
-                        <a href="/" class="nav-link" th:text="${home.pageName}"></a>
+                        <a href="/" class="nav-link active" th:text="${home.pageName}"></a>
                     </div>
 
                     <div role="presentation" class="nav-item" th:each="tab : ${pages}">
@@ -58,6 +58,12 @@
                     <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
                         <a href="/addPost" class="nav-link">Add a Post</a>
                     </div>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
+                        <a class="nav-link" href="/postApproval">Approvals</a>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')" role="presentation" class="nav-item">
+                        <a class="nav-link" href="/addPage">Add Page</a>
+                    </div>
                     <div sec:authorize="isAnonymous()" role="presentation" class="nav-item">
                         <a href="/login" id="login" class="nav-link">Login</a>
                     </div>
@@ -67,8 +73,8 @@
             <div class="row m-4">
                 <h2 style="font-family: georgia; font-style: italic" class="col text-left" th:text="${home.title}"></h2>
             </div>
-            <div class="row m-4">
-                <p class="col-8 text-left" th:text="${home.body}"></p>
+            <div class="row col-8 m-4">
+                <p class="text-left" th:utext="${home.body}"></p>
             </div>
 
             <footer class="page-footer">

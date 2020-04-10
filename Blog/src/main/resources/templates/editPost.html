@@ -57,6 +57,9 @@
 
                             <button type="submit" class="btn btn-primary m-2">Submit</button>
                             <input type="hidden" name="id" th:value="${content.id}"/>
+                            <input type="hidden" name="pageName" th:value="${content.pageName}"/>
+                            <input type="hidden" name="isStatic" th:value="${content.isStatic}"/>
+                            <input type="hidden" name="approved" th:value="${content.approved}"/>
                         </form>
                     </div>
                 </div>

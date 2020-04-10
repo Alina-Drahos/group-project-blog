@@ -6,12 +6,18 @@
 package com.sg.Blog.controller;
 
 import com.sg.Blog.dao.ContentDao;
+import com.sg.Blog.dao.RoleDao;
+import com.sg.Blog.dao.TagDao;
 import com.sg.Blog.dao.UserDao;
 import com.sg.Blog.entity.Content;
+import com.sg.Blog.entity.Tag;
+import com.sg.Blog.entity.User;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +41,12 @@ public class ContentController {
     @Autowired
     UserDao userDao;
 
+    @Autowired
+    TagDao tagDao;
+    
+    @Autowired
+    RoleDao roleDao;
+
     @GetMapping("/")
     public String displayHome(Model model) {
         Content homePage = new Content();
@@ -46,8 +58,8 @@ public class ContentController {
                 homePage = c;
             }
         }
-        
-        for(Content p : contents){
+
+        for (Content p : contents) {
             if (!p.getPageName().equalsIgnoreCase("home")) {
                 pages.add(p);
             }
@@ -56,7 +68,7 @@ public class ContentController {
         model.addAttribute("home", homePage);
         return "index";
     }
-    
+
     @GetMapping("page/{id}")
     public String setUpPage(@PathVariable Integer id, Model model) {
         List<Content> allPages = contentDao.findAllByIsStatic(true);
@@ -64,18 +76,18 @@ public class ContentController {
         Content page = contentDao.findById(id).orElse(null);
         List<Content> pages = new ArrayList<>();
 
-        for(Content p : allPages){
+        for (Content p : allPages) {
             if (p.getPageName().equalsIgnoreCase("home")) {
                 homePage = p;
             }
         }
-        
-        for(Content p : allPages){
+
+        for (Content p : allPages) {
             if (!p.getPageName().equalsIgnoreCase("home")) {
                 pages.add(p);
             }
         }
-        
+
         model.addAttribute("pages", pages);
         model.addAttribute("home", homePage);
         model.addAttribute("page", page);
@@ -86,15 +98,16 @@ public class ContentController {
     public String displayContent(Model model) {
         List<Content> staticPages = contentDao.findAllByIsStatic(true);
         List<Content> pages = new ArrayList<>();
-        
-        for(Content p : staticPages){
+
+        for (Content p : staticPages) {
             if (!p.getPageName().equalsIgnoreCase("home")) {
                 pages.add(p);
             }
         }
-        
-        List<Content> contents = contentDao.findAllByIsStatic(false);
-        model.addAttribute("contents", contents);
+
+        List<Content> approvedPosts = contentDao.findAllByApproved(true);
+
+        model.addAttribute("contents", approvedPosts);
         model.addAttribute("pages", pages);
 
         return "contents";
@@ -112,7 +125,34 @@ public class ContentController {
         if (result.hasErrors()) {
             return "addPost";
         }
-        content.setUser(userDao.findByUsername(p.getName()));
+
+        String[] parts = content.getBody().split(" ");
+        Set<Tag> tags = new HashSet<>();
+
+        for (int i = 0; i < parts.length; i++) {
+            if (parts[i].contains("<p>") || parts[i].contains("</p>")) {
+                parts[i] = parts[i].replace("<p>", "");
+                parts[i] = parts[i].replace("</p>", "");
+            }
+
+            if (parts[i].contains("#")) {
+                if (tagDao.findByHashtag(parts[i]) == null) {
+                    Tag tag = new Tag();
+                    tag.setHashtag(parts[i]);
+                    tagDao.save(tag);
+                    tags.add(tag);
+                } else {
+                    tags.add(tagDao.findByHashtag(parts[i]));
+                }
+            }
+        }
+        
+        User user = userDao.findByUsername(p.getName());
+        content.setHashtags(tags);
+        content.setUser(user);
+        if (user.getRoles().contains(roleDao.findByRole("ROLE_ADMIN"))) {
+            content.setApproved(true);
+        }
         content.setIsStatic(false);
         contentDao.save(content);
         return "redirect:/contents";
@@ -140,6 +180,23 @@ public class ContentController {
         if (result.hasErrors()) {
             return "editPost";
         }
+
+        String[] parts = content.getBody().split(" ");
+        Set<Tag> tags = new HashSet<>();
+        for (int i = 0; i < parts.length; i++) {
+            if (parts[i].contains("#")) {
+                if (tagDao.findByHashtag(parts[i]) == null) {
+                    Tag tag = new Tag();
+                    tag.setHashtag(parts[i]);
+                    tagDao.save(tag);
+                    tags.add(tag);
+                } else {
+                    tags.add(tagDao.findByHashtag(parts[i]));
+                }
+            }
+        }
+
+        content.setHashtags(tags);
         content.setUser(userDao.findByUsername(p.getName()));
         contentDao.save(content);
 
@@ -158,8 +215,41 @@ public class ContentController {
     public String addPage(Principal p, Content page) {
         page.setUser(userDao.findByUsername(p.getName()));
         page.setIsStatic(true);
+        page.setApproved(false);
         contentDao.save(page);
         return "redirect:/";
     }
     
+    @GetMapping("/postApproval")
+    public String approvedPosts(Model model) {
+        List<Content> allPosts = contentDao.findAllByApproved(false);
+        List<Content> staticPages = contentDao.findAllByIsStatic(true);
+        
+        List<Content> notApproved = new ArrayList<>();
+        for(Content c : allPosts) {
+            if (c.isIsStatic() == false) {
+                notApproved.add(c);
+            }
+        }
+        
+        List<Content> pages = new ArrayList<>();
+        for (Content p : staticPages) {
+            if (!p.getPageName().equalsIgnoreCase("home")) {
+                pages.add(p);
+            }
+        }
+        
+        model.addAttribute("pages", pages);
+        model.addAttribute("posts", notApproved);
+        return "postApproval";
+    }
+    
+    @PostMapping("/postApproval")
+    public String sendPost(Integer id) {
+        Content content = contentDao.findById(id).orElse(null);
+        content.setApproved(true);
+        contentDao.save(content);
+        return "redirect:/contents";
+    }
+
 }

@@ -46,7 +46,7 @@
                     </div>
 
                     <div role="presentation" class="nav-item" th:each="tab : ${pages}">
-                        <a th:href="${'/page/' + tab.id}" class="nav-link" th:text="${tab.pageName}"></a>
+                        <a th:href="${'/page/' + tab.id}" class="nav-link active" th:text="${tab.pageName}"></a>
                     </div>
 
                     <div role="presentation" class="nav-item">

@@ -45,6 +45,11 @@ and open the template in the editor.
                             Home
                         </a>
                     </li>
+                    
+                    <li role="presentation" class="nav-item" th:each="tab : ${pages}">
+                        <a class="nav-link" th:href="${'/page/' + tab.id}" th:text="${tab.pageName}"></a>
+                    </li>
+                    
                     <li role="presentation" class="nav-item">
                         <a class="nav-link" href="/contents">
                             Blog Feed
@@ -53,6 +58,16 @@ and open the template in the editor.
                     <li role="presentation" class="nav-item">
                         <a class="nav-link active" href="/admin">
                             Admin Menu
+                        </a>
+                    </li>
+                    <li role="presentation" class="nav-item">
+                        <a class="nav-link" href="/addPost">
+                            Add a Post
+                        </a>
+                    </li>
+                    <li role="presentation" class="nav-item">
+                        <a class="nav-link" href="/postApproval">
+                            Approvals
                         </a>
                     </li>
                     <li role="presentation" class="nav-item">

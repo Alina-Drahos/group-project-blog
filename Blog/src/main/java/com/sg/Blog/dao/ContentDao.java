@@ -21,5 +21,7 @@ public interface ContentDao extends JpaRepository<Content, Integer>{
     List<Content> findAllByHashtagsContaining(Tag tag);
     List<Content> findAllByUser(User user);
     Content findByTitle(String title);
+    
     List<Content> findAllByIsStatic(Boolean bool);
+    List<Content> findAllByApproved(Boolean bool);
 }

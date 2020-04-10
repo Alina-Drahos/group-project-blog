@@ -5,10 +5,13 @@
  */
 package com.sg.Blog.controller;
 
+import com.sg.Blog.dao.ContentDao;
 import com.sg.Blog.dao.RoleDao;
 import com.sg.Blog.dao.UserDao;
+import com.sg.Blog.entity.Content;
 import com.sg.Blog.entity.Role;
 import com.sg.Blog.entity.User;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,9 +37,21 @@ public class userController {
 
     @Autowired
     PasswordEncoder encoder;
+    
+    @Autowired
+    ContentDao contentDao;
 
     @GetMapping("/admin")
     public String displayAdminPage(Model model) {
+        List<Content> staticPages = contentDao.findAllByIsStatic(true);
+        List<Content> pages = new ArrayList<>();
+        for (Content p : staticPages) {
+            if (!p.getPageName().equalsIgnoreCase("home")) {
+                pages.add(p);
+            }
+        }
+        
+        model.addAttribute("pages", pages);
         model.addAttribute("users", users.findAll());
         return "admin";
     }
