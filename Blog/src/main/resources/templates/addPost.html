@@ -17,59 +17,60 @@
     <body>
         <!-- Main Body of Page -->
 
-            <div class="container">
-                <div class="row m-4">
-                    <div class="col text-center">
-                        <h1>Game Blog</h1><hr/>
-                    </div>
+        <div class="container">
+            <div class="row m-4">
+                <div class="col text-center">
+                    <h1>Game Blog</h1><hr/>
                 </div>
-
-                <div class="row m-4">
-                    <button class="btn btn-outline-secondary"><a href="/contents">< Back</a></button>
-                </div>
-
-                <div class="row m-4">
-                    <div class="col text-center m-3">
-                        <h3>Add Post</h3>
-                    </div>
-                </div>
-                <div class="row m-4">
-                    <div class="row col m-3">
-                        <form action="/addPost" method="POST">
-                            <input type="hidden" 
-                                   th:name="${_csrf.parameterName}" 
-                                   th:value="${_csrf.token}"/>
-                            <div class="row form-group m-2">
-                                <label for="title" class="col-form-label col-3">Title: </label>
-                                <input type="text" class="col-7 form-control" id="title" name="title" placeholder="Enter title"/>
-                            </div>
-                            <div id="err" th:if="${#fields.hasErrors('content.title')}">
-                                <p th:each="error : ${#fields.errors('content.title')}" class=" text-center alert alert-danger" 
-                                   th:text="${error}"></p>
-                            </div>
-
-                            <div class="row form-group m-2">
-                                <label for="date" class="col-form-label col-3">Published: </label>
-                                <input required id="date" type="date" class="col-7 form-control" th:value="${today}" name="datePublished"/>
-                            </div>
-
-                            <textarea id="mytextarea" class="form-control m-2" name="body" placeholder="Enter body"></textarea>
-                            <div id="err" th:if="${#fields.hasErrors('content.body')}">
-                                <p th:each="error : ${#fields.errors('content.body')}" class="text-center alert alert-danger" 
-                                   th:text="${error}"></p>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary m-2">Submit</button>
-                        </form>
-                    </div>
-                </div>
-
-                <footer class="page-footer">
-                    <div class="col text-center">
-                        <small>Copyright &copy; Game Blog</small>
-                    </div>
-                </footer>
             </div>
+
+            <div class="row m-4">
+                <button class="btn btn-outline-secondary"><a href="/contents">< Back</a></button>
+            </div>
+
+            <div class="row m-4">
+                <div class="col text-center m-3">
+                    <h3>Add Post</h3>
+                </div>
+            </div>
+            <div class="row m-4">
+                <div class="row col m-3 border border-danger shadow-lg p-3 mb-5 bg-white rounded">
+                    <form action="/addPost" method="POST">
+                        <input type="hidden" 
+                               th:name="${_csrf.parameterName}" 
+                               th:value="${_csrf.token}"/>
+                        <div class="row form-group m-2">
+                            <label for="title" class="col-form-label col-3">Title: </label>
+                            <input type="text" class="col-7 form-control" id="title" name="title" placeholder="Enter title"/>
+                        </div>
+                        <div id="err" th:if="${#fields.hasErrors('content.title')}">
+                            <p th:each="error : ${#fields.errors('content.title')}" class=" text-center alert alert-danger" 
+                               th:text="${error}"></p>
+                        </div>
+
+                        <div class="row form-group m-2">
+                            <label for="date" class="col-form-label col-3">Published: </label>
+                            <input required id="date" type="date" class="col-7 form-control" th:value="${today}" name="datePublished"/>
+                        </div>
+
+                        <textarea id="mytextarea" class="form-control m-2" name="body" placeholder="Enter body"></textarea>
+                        <div id="err" th:if="${#fields.hasErrors('content.body')}">
+                            <p th:each="error : ${#fields.errors('content.body')}" class="text-center alert alert-danger" 
+                               th:text="${error}"></p>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary m-2">Submit</button>
+                    </form>
+                    <div class="col-3 ml-5"><img th:src="@{img/pencil-sketch.jpg}" style="width:250px"/></div>
+                </div>
+            </div>
+
+            <footer class="page-footer">
+                <div class="col text-center">
+                    <small>Copyright &copy; Game Blog</small>
+                </div>
+            </footer>
+        </div>
 
         <!-- End main body -->
 

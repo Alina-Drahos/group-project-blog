@@ -24,28 +24,31 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class TagController {
-    
+
     @Autowired
     TagDao tagDao;
-    
+
     @Autowired
     ContentDao contentDao;
-    
+
     @GetMapping("contents/hashtag")
     public String searchHashtags(String hashtag, Model model) {
         if (hashtag.isBlank()) {
             return "redirect:/contents";
         }
-        
-        Tag tag = tagDao.findByHashtag(hashtag);
-        List<Content> posts = contentDao.findAllByHashtagsContaining(tag);
+        List<Content>posts= new ArrayList<>();
+        if (tagDao.findByHashtag(hashtag) != null) {
+            Tag tag = tagDao.findByHashtag(hashtag);
+            posts = contentDao.findAllByHashtagsContaining(tag);
+        }
+
         List<Content> approvedPosts = new ArrayList<>();
-        for(Content c : posts){
+        for (Content c : posts) {
             if (c.isApproved() == true) {
                 approvedPosts.add(c);
             }
         }
-        
+
         List<Content> staticPages = contentDao.findAllByIsStatic(true);
         List<Content> pages = new ArrayList<>();
         for (Content p : staticPages) {
@@ -53,7 +56,7 @@ public class TagController {
                 pages.add(p);
             }
         }
-        
+
         model.addAttribute("pages", pages);
         model.addAttribute("posts", approvedPosts);
         return "hashtags";
