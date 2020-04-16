@@ -74,10 +74,12 @@
                 </div>
 
                 <div class ="row">
-                    <div class="col-8" th:if="${posts.isEmpty()}">
-                        <p>No Posts</p>
+                    <div class="col-8" th:if="${posts.isEmpty()}"> 
+                        <div class="col text-center">
+                            <h3>No Posts</h3>
+                        </div>
                     </div>
-                    <div class="col-8" th:unless="${posts.isEmpty()}">                        
+                    <div class="col-8" th:unless="${posts.isEmpty()}">
                         <div class="border border-dark m-4" th:each="post : ${posts}">
                             <div class="row my-4 mr-4 ml-2">
                                 <div class="col-11">
@@ -102,6 +104,7 @@
                                 <p class="text-left" th:utext="${post.body}"></p>
                             </div>
                         </div>
+                    
                     </div>
 
                     <div class="col-3">
@@ -118,8 +121,9 @@
                     </div>
                 </div>
 
-                <footer class="page-footer">
-                    <div class="col text-center">
+                <footer class="footer">
+                    <hr/>
+                    <div class="col text-center navbar-static-bottom m-2">
                         <small>Copyright &copy; Game Blog</small>
                     </div>
                 </footer>
