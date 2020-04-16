@@ -1,0 +1,18 @@
+
+table{
+    border:2px solid black;
+    border-top: 2px solid black !important;
+    font-family: 'Press Start 2P', cursive;
+    color:blue!important;
+
+}
+
+.specialBorder{
+    border:2px solid black !important;
+    border-top: 2px solid black !important;
+}
+
+h4{
+    font-family: 'Press Start 2P', cursive;
+    color:blue!important;
+}

@@ -36,6 +36,7 @@ public class TagController {
         }
         
         List<Content> posts = new ArrayList<>();
+
         if (tagDao.findByHashtag(hashtag) != null) {
             Tag tag = tagDao.findByHashtag(hashtag);
             posts = contentDao.findAllByHashtagsContaining(tag);
