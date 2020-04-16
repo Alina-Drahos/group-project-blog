@@ -214,10 +214,10 @@ public class ContentController {
     public String addPage(Principal p, Content page, BindingResult result, Model model) {
         for (Content c : contentDao.findAllByIsStatic(true)) {
             if (c.getPageName().equalsIgnoreCase(page.getPageName())) {
-                FieldError error = new FieldError("content", "page", "That Page Already Exist");
+                FieldError error = new FieldError("content", "pageName", "That Page Already Exist");
                 result.addError(error);
-                model.addAttribute("content", new Content());
-                return "redirect:/addPage";
+                model.addAttribute("content", page);
+                return "addPage";
             }
         }
         page.setUser(userDao.findByUsername(p.getName()));
