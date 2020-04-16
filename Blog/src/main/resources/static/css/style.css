@@ -12,7 +12,12 @@ table{
     border-top: 2px solid black !important;
 }
 
-h4{
+h4,h5,h1{
     font-family: 'Press Start 2P', cursive;
     color:blue!important;
+}
+
+body{
+    
+   
 }

@@ -132,8 +132,8 @@ public class ContentController {
 
         for (int i = 0; i < parts.length; i++) {
             if (parts[i].contains("<p>") || parts[i].contains("</p>")) {
-                parts[i] = parts[i].replace("<p>", "");
-                parts[i] = parts[i].replace("</p>", "");
+                parts[i] = parts[i].replaceAll("<p>", "");
+                parts[i] = parts[i].replaceAll("</p>", "");
             }
 
             if (parts[i].contains("#")) {
