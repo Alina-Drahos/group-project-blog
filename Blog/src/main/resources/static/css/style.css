@@ -17,7 +17,14 @@ h4,h5,h1{
     color:blue!important;
 }
 
-body{
-    
-   
+body::after{
+    content:"";
+    background-image: url('https://files.slack.com/files-pri/T1JUM9ZNC-F011KDLPTE3/blogbackground.jpg');
+    opacity: 0.2;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;   
 }
